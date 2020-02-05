@@ -1,0 +1,18 @@
+<!-- This html page acts as the styling for the rest of the application-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+<!-- The line below states the default character encoding for html--->
+        <meta charset="utf-8">
+        <title>Room Booking System</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+    <body>
+<!-- A navigation bar is created in another html file and it means that this style sheet will include
+	the navigation bar across all html templates-->
+        {% include 'includes/_navbar.html' %}
+        {% block body %}{% endblock %}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

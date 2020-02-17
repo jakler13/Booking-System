@@ -23,6 +23,7 @@ from flask_sqlalchemy import SQLAlchemy
 #SQLAlchemy handles the database 
 from datetime import datetime
 #datetime allows the date the employee picks to be saved in the
+from configparser import SafeConfigParser
 
 app = Flask(__name__)
 
@@ -30,13 +31,14 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #app.config below is where the database is stored using mysql the first part is the server name. 
 #After the : is the server password and following that is the web servers name 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql2314893:nM2%bH5%@sql2.freemysqlhosting.net/sql2314893'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
 #setting the database to be accessed later under db rather than the whole SQLAlchemy library
 db = SQLAlchemy(app)
+db.app = app
 
 #I create a class that will create a database model of all the bookings
-class records(db.Model):
+class Record(db.Model):
 #id is the primary key for the table .Column gives it the header in the table
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(50))
@@ -84,25 +86,29 @@ def feedback():
 #Below, all the fields filled out in the booking form
 #Using the request module that was imported at the top
 #Each individual is requested an dthe value associated with that specific form is stored in it
+    db.create_all()
+    # need to format HTML date into python's datetime
+    formDateData =request.form['date']
+
+    print("Date -> " + formDateData)
+
     fname = request.form['fname']
     lname = request.form['lname']
     email = request.form['email']
     room = request.form['room']
-    date = request.form['date']
+    date = datetime.strptime(formDateData, '%Y-%m-%d') # second parameter is local representation of the string
 #The make is in respect to the records class created earlier
 #The variables and values associated are all passed in to add to a databse table
-    make=records(fname=fname, lname=lname, email=email, room=room, date=date)
+    record=Record(fname=fname, lname=lname, email=email, room=room, date=date)
 #db.session starts a new entry and then the commit function adds them
-    db.session.add(make)
+    db.session.add(record)
     db.session.commit()
 #a variable result is created which requests the entire contents of the table
 #hence the query.all()
-    result = records.query.all()
+    result = Record.query.all()
 #feedback template is called and variables needed in the feedback template are also passed in
 #result is sent in so the entire tables contents can be referenced
     return render_template('feedback.html', fname = fname, lname = lname, email = email, room = room, date = date, result = result)
-
-
 
 #DEFAULT FLASK CODE                                       
 if __name__ == '__main__':                                 
@@ -112,6 +118,6 @@ if __name__ == '__main__':
     try:                                                 
         PORT = int(os.environ.get('SERVER_PORT', '5555'))   
     except ValueError:                                      
-        PORT = 5555                                        
+        PORT = 5555                                    
     app.run(HOST, PORT)                                     
 

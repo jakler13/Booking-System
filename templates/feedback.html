@@ -13,7 +13,7 @@
  -->
         <h1>Thank You For Completing The Form</h1>
         <p class="lead">You Entered</p>
-<!-- Anything in the {{}} is a variable that is passed in from app.py
+<!-- Anything within the double curly brackets  is a variable that is passed in from app.py
 	These ones are the values of the form
 	(fname , lname, email , room , date)
 -->
@@ -30,7 +30,7 @@
 -->
         {% for r in result %}
         <div class ="lead">
-        	{{fname}} {{lname}} {{email}} Room{{room}} {{date}}
+        	{{r.fname}} {{r.lname}} {{r.email}} Room{{r.room}} {{r.date}}
         </div>
 <!-- End of the loop-->
         {% endfor %}

@@ -1,0 +1,67 @@
+<!-- This is the form that the users will fill out when making a booking
+    It is a default html template in this case does not follow the layout.html file-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #555;
+        }
+
+        .content {
+            max-width: 1920px;
+            margin: auto;
+            background: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+
+        <!--The title of the page is centered and given a border
+            'Enter Your Details' is written at the top of the page
+            with a red box as an outline-->
+
+        <h1 align="center" style="border:4px solid Tomato;">Enter your details</h1>
+        <!-- a form action states where the information from this template is sent
+            In this case, it is sent to the feedback template
+            In that template the data is handled (See feedback.html)
+            This also uses the POST method so the data contained within this template can be accessed in others
+        -->
+
+        <form action="/signupresult" method="POST">
+            <fieldset>
+                <!-- A legend is what is used in html to group form data-->
+                <legend>Fill In Each Box</legend>
+                <!-- The first three inputs are all textboxes
+                    First Name , Last Name and Email
+                    Value " " Means that before anything is typed, the input areas are default empty
+                -->
+                First name:<br>
+                <input type="text" name="fname" value=" ">
+                <br><br>
+                Last name:<br>
+                <input type="text" name="lname" value=" ">
+                <br><br>
+                Email Address:<br>
+                <input type="text" name="email" value=" ">
+                <br><br>
+                Password:<br>
+                <input type="text" name="password" value=" ">
+                <br>
+                <input type="submit" value="Submit" name="sub">
+                <!-- Submit button sends the values of the fields above-->
+            </fieldset>
+        </form>
+    </div>
+
+</body>
+</html>
+
+<!-- REFERENCE: <br></br> Is a break so above each input field is
+    seperated onto a new line
+-->

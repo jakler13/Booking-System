@@ -1,0 +1,14 @@
+<!-- The landing page
+    Uses the styling of layout.html
+-->
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="jumbotron text-center">
+    <h1>Welcome To Your Room Booking Application</h1>
+    <!--{% if session.logged_in == NULL %}-->
+    <p>Successful sign up.</p>
+    <a href="/home" class="btn btn-success btn-lg">Home</a>
+    <!--{% endif %}-->
+</div>
+{% endblock %}

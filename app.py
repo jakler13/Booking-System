@@ -43,6 +43,7 @@ db.app = app
 # I create a class that will create a database model of all the bookings
 class Booking(db.Model):
     # id is the primary key for the table .Column gives it the header in the table
+    __table_args__ = (db.UniqueConstraint('room', 'date'),)
     id = db.Column(db.Integer, primary_key=True)
     # first name (fname) has a max string length of 50
     fname = db.Column(db.String(50))

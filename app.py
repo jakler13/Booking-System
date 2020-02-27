@@ -31,7 +31,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config below is where the database is stored using mysql the first part is the server name.
 # After the : is the server password and following that is the web servers name
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test_db_2.db'
 
 # setting the database to be accessed later under db rather than the whole SQLAlchemy library
 db = SQLAlchemy(app)
@@ -91,8 +91,16 @@ def login():
 
 @app.route('/loginresult', methods=['POST'])
 def loginresult():
-    # TODO login handling
-    return render_template('loginresult.html')
+    db.create_all()
+    email = request.form['email']
+    password = request.form['password']
+    exists = db.session.query(
+        db.session.query(Members).filter_by(email=email, password=password).exists()
+    ).scalar()
+    if exists:
+        return render_template('loginresult.html')
+    else:
+        return "This user does not exist. Please go back and try again."
 
 
 @app.route('/home')

@@ -16,15 +16,13 @@
 # Is Running is created and then ready to be pasted into the url
 ######################################################################################
 
-
-# SQLAlchemy handles the database
+# datetime allows the date the employee picks to be saved in the database
 from datetime import datetime
-
 # I imported render_template, which combines the app route to a html page created in a different file
 from flask import Flask, render_template, request
+# SQLAlchemy handles the database
 from flask_sqlalchemy import SQLAlchemy
-
-# datetime allows the date the employee picks to be saved in the
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 
@@ -42,8 +40,9 @@ db.app = app
 
 # I create a class that will create a database model of all the bookings
 class Booking(db.Model):
-    # id is the primary key for the table .Column gives it the header in the table
+    # Make the combination of room and date unique to prevent double bookings
     __table_args__ = (db.UniqueConstraint('room', 'date'),)
+    # id is the primary key for the table .Column gives it the header in the table
     id = db.Column(db.Integer, primary_key=True)
     # first name (fname) has a max string length of 50
     fname = db.Column(db.String(50))
@@ -154,7 +153,10 @@ def feedback():
     record = Booking(fname=fname, lname=lname, email=email, room=room, date=date)
     # db.session starts a new entry and then the commit function adds them
     db.session.add(record)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return "The same booking already exists. Please go back and try again."
     # a variable result is created which requests the entire contents of the table
     # hence the query.all()
     result = Booking.query.all()
